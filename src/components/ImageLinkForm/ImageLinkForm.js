@@ -5,7 +5,7 @@ const ImageLinkForm = ({onInputChange ,onPictureSubmit}) => {
     return (
         <div>
             <p className='f3'>
-                {'Use our tools to dectect .........'}
+                {'Link an image and we will detect if it contains human faces'}
             </p>
             <div className='center'>
                 <div className=' form center pa4 br3 shadow-5'>
