@@ -81,7 +81,7 @@ class App extends Component {
   }
 
 
-  //
+  //Setting box around they image
   displayFaceBox = (box) => {
     this.setState({ box: box });
   }
