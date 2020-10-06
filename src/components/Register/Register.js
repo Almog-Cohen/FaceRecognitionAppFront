@@ -24,6 +24,12 @@ class Register extends React.Component {
       }
 
     onSubmitSignIn = () => {
+
+if(this.state.name === ''){
+    let text = 'Worng input';
+    document.getElementById('demo').innerHTML = text;
+    console.log(text);
+}else{
         fetch('https://glacial-beach-93669.herokuapp.com/register', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
@@ -40,6 +46,7 @@ class Register extends React.Component {
               this.props.onRouteChange('home');
             }
           })
+        }
       }
 
     render() {
@@ -55,6 +62,7 @@ class Register extends React.Component {
                                 <input
                                     onChange={this.onNameChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="name" name="name" id="email-address" />
+                                    <p id='demo'></p>
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
