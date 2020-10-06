@@ -26,7 +26,7 @@ class Register extends React.Component {
     onSubmitSignIn = () => {
 
 if(this.state.name === ''){
-    let text = 'Worng input';
+    let text = 'Worng input'
     document.getElementById('demo').innerHTML = text;
     console.log(text);
 }else{
@@ -62,7 +62,7 @@ if(this.state.name === ''){
                                 <input
                                     onChange={this.onNameChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="name" name="name" id="email-address" />
-                                    <p id='demo'></p>
+                                    <p className='b--red f4' id='demo'></p>
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
