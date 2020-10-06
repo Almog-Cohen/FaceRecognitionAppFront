@@ -20,34 +20,41 @@ class Register extends React.Component {
     }
 
     onPasswordChange = (event) => {
-        this.setState({password: event.target.value})
-      }
+        this.setState({ password: event.target.value })
+    }
 
     onSubmitSignIn = () => {
 
-if(this.state.name === ''){
-    let text = 'Worng input'
-    document.getElementById('demo').innerHTML = text;
-    console.log(text);
-}else{
-        fetch('https://glacial-beach-93669.herokuapp.com/register', {
-          method: 'post',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            email: this.state.email,
-            password: this.state.password,
-            name: this.state.name
-          })
-        })
-          .then(response => response.json())
-          .then(user => {
-            if (user.id) {
-              this.props.loadUser(user)
-              this.props.onRouteChange('home');
-            }
-          })
+        if(!this.state.email || !this.state.password || !this.state.name){
+        if (this.state.name === '') {
+            document.getElementById('nameInput').innerHTML = 'Please enter your name';
+        
         }
-      }
+         if(this.state.password.length < 6){
+            document.getElementById('passwordInput').innerHTML = 'Your password need conatin 6 characters';
+        }
+        if(this.state.email.length === ''){
+            document.getElementById('emailInput').innerHTML = 'Please enter your email address';
+        }
+     } else {
+            fetch('https://glacial-beach-93669.herokuapp.com/register', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: this.state.email,
+                    password: this.state.password,
+                    name: this.state.name
+                })
+            })
+                .then(response => response.json())
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user)
+                        this.props.onRouteChange('home');
+                    }
+                })
+        }
+    }
 
     render() {
         return (
@@ -57,24 +64,28 @@ if(this.state.name === ''){
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                             <legend className="f1 fw6 ph0 mh0">Register</legend>
                             <div className="mt3">
-                                
+
                                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                                 <input
                                     onChange={this.onNameChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="name" name="name" id="email-address" />
-                                    <p className='b--red f4' id='demo'></p>
+                                <p style="color:red ; font-size:12px" id='nameInput'></p>
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input
                                     onChange={this.onEmailChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
+                                <p style="color:red ; font-size:12px" id='emailInput'></p>
+
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input
                                     onChange={this.onPasswordChange}
                                     className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
+                                <p style="color:red ; font-size:12px" id='passwordInput'></p>
+
                             </div>
                         </fieldset>
                         <div className="">
