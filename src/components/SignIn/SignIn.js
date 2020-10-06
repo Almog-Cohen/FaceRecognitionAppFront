@@ -21,6 +21,17 @@ class SignIn extends React.Component {
     }
 
     onSubmitSignIn = () => {
+
+
+        if(!this.state.signInEmail || !this.state.signInPassword){
+     
+             if(this.state.signInPassword.length === 0){
+                document.getElementById('passwordSignInInput').innerHTML = 'Please enter your password';
+            }
+            if(this.state.signInEmail === ''){
+                document.getElementById('emailSignInInput').innerHTML = 'Please enter your email address';
+            }
+        }else {
         fetch('https://glacial-beach-93669.herokuapp.com/signin',{
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -28,7 +39,10 @@ class SignIn extends React.Component {
                 email: this.state.signInEmail,
                 password: this.state.signInPassword
             })
-        }).then(response => response.json())
+        }).then(response => {
+            response.json()
+            console.log(response.json());
+        })
         .then (user => {
             if(user.id){
                 this.props.loadUser(user);
@@ -36,9 +50,14 @@ class SignIn extends React.Component {
             }
         })
     }
+    }
 
     render() {
         const { onRouteChange } = this.props;
+        const mystyle = {
+            color: "red",
+            fontSize: "12px"
+          };
         return (
             <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center">
                 <main className="pa4 black-80">
@@ -48,10 +67,13 @@ class SignIn extends React.Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input onChange={this.onEmailChange} className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
+                                <p style={mystyle} id='passwordSignInInput'></p>
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
+                                <p style={mystyle} id='emailSignInInput'></p>
+
                             </div>
                         </fieldset>
                         <div className="">
