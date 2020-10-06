@@ -41,7 +41,9 @@ class SignIn extends React.Component {
             })
         }).then(response => {
             response.json()
-            console.log(response.json());
+            if (!response){
+                document.getElementById('passwordSignInInput').innerHTML = 'Email or password invalid';
+            }
         })
         .then (user => {
             if(user.id){
@@ -67,12 +69,12 @@ class SignIn extends React.Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input onChange={this.onEmailChange} className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
-                                <p style={mystyle} id='passwordSignInInput'></p>
+                                <p style={mystyle} id='emailSignInInput'></p>
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
-                                <p style={mystyle} id='emailSignInInput'></p>
+                                <p style={mystyle} id='passwordSignInInput'></p>
 
                             </div>
                         </fieldset>
