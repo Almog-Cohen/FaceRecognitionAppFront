@@ -41,7 +41,7 @@ class SignIn extends React.Component {
             })
         }).then(response => {
             response.json()
-            if (!response){
+            if (response.status === 400){
                 document.getElementById('passwordSignInInput').innerHTML = 'Email or password invalid';
             }
         })
