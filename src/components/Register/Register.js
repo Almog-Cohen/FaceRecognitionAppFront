@@ -33,7 +33,7 @@ class Register extends React.Component {
          if(this.state.password.length < 6){
             document.getElementById('passwordInput').innerHTML = 'Your password need conatin 6 characters';
         }
-        if(this.state.email.length === ''){
+        if(this.state.email === ''){
             document.getElementById('emailInput').innerHTML = 'Please enter your email address';
         }
      } else {
@@ -57,6 +57,13 @@ class Register extends React.Component {
     }
 
     render() {
+
+
+        const mystyle = {
+            color: "red",
+            fontSize: "12px"
+          };
+
         return (
             <div className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center">
                 <main className="pa4 black-80">
@@ -69,14 +76,14 @@ class Register extends React.Component {
                                 <input
                                     onChange={this.onNameChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="name" name="name" id="email-address" />
-                                <p style={{color:'red'} , {fontSize:'12px'}} id='nameInput'></p>
+                                <p style={mystyle} id='nameInput'></p>
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input
                                     onChange={this.onEmailChange}
                                     className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
-                                <p style={{color:'red'} , {fontSize:'12px'}} id='emailInput'></p>
+                                <p style={mystyle} id='emailInput'></p>
 
                             </div>
                             <div className="mv3">
@@ -84,7 +91,7 @@ class Register extends React.Component {
                                 <input
                                     onChange={this.onPasswordChange}
                                     className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
-                                <p style={{color:'red'} , {fontSize:'12px'}} id='passwordInput'></p>
+                                <p style={mystyle} id='passwordInput'></p>
 
                             </div>
                         </fieldset>
