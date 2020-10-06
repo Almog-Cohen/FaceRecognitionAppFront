@@ -40,9 +40,10 @@ class SignIn extends React.Component {
                 password: this.state.signInPassword
             })
         }).then(response => {
-            response.json()
             if (response.status === 400){
                 document.getElementById('passwordSignInInput').innerHTML = 'Email or password invalid';
+                document.getElementById('emailSignInInput').innerHTML = '';
+                return response.json()
             }
         })
         .then (user => {
