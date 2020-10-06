@@ -30,8 +30,8 @@ class Register extends React.Component {
             document.getElementById('nameInput').innerHTML = 'Please enter your name';
         
         }
-         if(this.state.password.length < 6){
-            document.getElementById('passwordInput').innerHTML = 'Your password need conatin 6 characters';
+         if(this.state.password.length < 5){
+            document.getElementById('passwordInput').innerHTML = 'Your password need conatin at least 6 characters';
         }
         if(this.state.email === ''){
             document.getElementById('emailInput').innerHTML = 'Please enter your email address';
@@ -46,7 +46,14 @@ class Register extends React.Component {
                     name: this.state.name
                 })
             })
-                .then(response => response.json())
+                .then(response =>{
+                    if (response.status === 400){
+                        document.getElementById('emailInput').innerHTML = '';
+                        document.getElementById('passwordInput').innerHTML = 'This email exsits ';
+                        document.getElementById('nameInput').innerHTML = '';
+                    }
+                  return response.json();
+                } )
                 .then(user => {
                     if (user.id) {
                         this.props.loadUser(user)
