@@ -30,7 +30,7 @@ const particlesDesign = {
 const initialState = { 
   input: '',
   imageUrl: '',
-  box: {},
+  boxes: [],
   route: 'signin',
   isSignedIn: false,
 
@@ -67,23 +67,27 @@ class App extends Component {
   }
 
   //Calculating the face location
-  calculateFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputImage');
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height)
-    }
+  calculateFacesLocation = (data) => {
+    return  data.outputs[0].data.regions.map( face =>{
+
+      const clarifaiFace = face.region_info.bounding_box;
+      const image = document.getElementById('inputImage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - (clarifaiFace.right_col * width),
+        bottomRow: height - (clarifaiFace.bottom_row * height)
+      }
+    })
+
   }
 
 
   //Setting box around they image
-  displayFaceBox = (box) => {
-    this.setState({ box: box });
+  displayFaceBox = (boxes) => {
+    this.setState({ boxes: boxes });
   }
 
   //Listener for input url text
@@ -122,7 +126,7 @@ class App extends Component {
             .catch(console.log)
           }
           
-              this.displayFaceBox(this.calculateFaceLocation(response))
+              this.displayFaceBox(this.calculateFacesLocation(response))
             })
             .catch(err => console.log(err));
         }
@@ -140,7 +144,7 @@ class App extends Component {
 
         render() {
 
-          const { isSignedIn, imageUrl, route, box } = this.state;
+          const { isSignedIn, imageUrl, route, boxes } = this.state;
           return (
             <div className="App">
               <Particles className='particles'
@@ -160,7 +164,7 @@ class App extends Component {
                     onPictureSubmit={this.onPictureSubmit}
                   />
                   <FaceRecognition
-                    box={box}
+                    boxes={boxes}
                     imageUrl={imageUrl}
                   />
                   {/* <TopRank /> */}
