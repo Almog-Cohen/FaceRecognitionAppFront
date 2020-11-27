@@ -32,7 +32,7 @@ class SignIn extends React.Component {
                 document.getElementById('emailSignInInput').innerHTML = 'Please enter your email address';
             }
         }else {
-        fetch('https://glacial-beach-93669.herokuapp.com/signin',{
+        fetch('http://localhost:3001/signin',{
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

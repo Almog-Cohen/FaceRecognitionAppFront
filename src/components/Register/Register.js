@@ -37,7 +37,7 @@ class Register extends React.Component {
             document.getElementById('emailInput').innerHTML = 'Please enter your email address';
         }
      } else {
-            fetch('https://glacial-beach-93669.herokuapp.com/register', {
+            fetch('http://localhost:3001/register', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
