@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../SignIn/Signin.css' 
 class Register extends React.Component {
 
     constructor(props) {
@@ -21,6 +21,10 @@ class Register extends React.Component {
 
     onPasswordChange = (event) => {
         this.setState({ password: event.target.value })
+    }
+
+    saveAuthTokenInSession = (token) => {
+        window.sessionStorage.setItem('token',token);
     }
 
     onSubmitSignIn = () => {
@@ -46,23 +50,40 @@ class Register extends React.Component {
                     name: this.state.name
                 })
             })
-                .then(response =>{
-                    if (response.status === 400){
-                        document.getElementById('emailInput').innerHTML = '';
-                        document.getElementById('passwordInput').innerHTML = 'This email exsits ';
-                        document.getElementById('nameInput').innerHTML = '';
-                    }
-                  return response.json();
-                } )
-                .then(user => {
-                    if (user.id) {
-                        this.props.loadUser(user)
-                        this.props.onRouteChange('home');
+                .then(response => {
+                        if (response.status === 400){
+        document.getElementById('emailInput').innerHTML = '';
+        document.getElementById('passwordInput').innerHTML = 'This email exsits ';
+        document.getElementById('nameInput').innerHTML = '';
+    }
+                  return response.json()
+                })
+                .then(data => {
+                    
+                    if (data.userId && data.success === 'true' )  {
+                        this.saveAuthTokenInSession(data.token)
+
+                        fetch(`http://localhost:3001/profile/${data.userId}`, {
+                            method: 'get',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': data.token
+                            }
+                          })
+                          .then(res => res.json())
+                          .then(user => {
+                            if(user){
+                              this.props.loadUser(user)
+                              this.props.onRouteChange('home')
+                            }
+                          })
+                      .catch(console.log)
+
                     }
                 })
         }
     }
-
+       
     render() {
 
 
@@ -82,14 +103,14 @@ class Register extends React.Component {
                                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                                 <input
                                     onChange={this.onNameChange}
-                                    className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="name" name="name" id="email-address" />
+                                    className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100 hover-black" type="name" name="name" id="email-address" />
                                 <p style={mystyle} id='nameInput'></p>
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                 <input
                                     onChange={this.onEmailChange}
-                                    className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
+                                    className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100 hover-black" type="email" name="email-address" id="email-address" />
                                 <p style={mystyle} id='emailInput'></p>
 
                             </div>
@@ -97,7 +118,7 @@ class Register extends React.Component {
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input
                                     onChange={this.onPasswordChange}
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
+                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black" type="password" name="password" id="password" />
                                 <p style={mystyle} id='passwordInput'></p>
 
                             </div>

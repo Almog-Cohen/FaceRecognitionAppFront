@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './Signin.css' 
 class SignIn extends React.Component {
 
     constructor() {
@@ -20,18 +20,22 @@ class SignIn extends React.Component {
         this.setState({ signInPassword: event.target.value })
     }
 
+    saveAuthTokenInSession = (token) => {
+        window.sessionStorage.setItem('token',token);
+    }
+
     onSubmitSignIn = () => {
 
 
-        if(!this.state.signInEmail || !this.state.signInPassword){
+        // if(!this.state.signInEmail || !this.state.signInPassword){
      
-             if(this.state.signInPassword.length === 0){
-                document.getElementById('passwordSignInInput').innerHTML = 'Please enter your password';
-            }
-            if(this.state.signInEmail === ''){
-                document.getElementById('emailSignInInput').innerHTML = 'Please enter your email address';
-            }
-        }else {
+            //  if(this.state.signInPassword.length === 0){
+            //     document.getElementById('passwordSignInInput').innerHTML = 'Please enter your password';
+            // }
+            // if(this.state.signInEmail === ''){
+            //     document.getElementById('emailSignInInput').innerHTML = 'Please enter your email address';
+            // }
+        // }else {
         fetch('http://localhost:3001/signin',{
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -39,21 +43,33 @@ class SignIn extends React.Component {
                 email: this.state.signInEmail,
                 password: this.state.signInPassword
             })
-        }).then(response => {
-            if (response.status === 400){
-                document.getElementById('passwordSignInInput').innerHTML = 'Email or password invalid';
-                document.getElementById('emailSignInInput').innerHTML = '';
-            }
-            return response.json();
-        })
-        .then (user => {
-            if(user.id){
-                this.props.loadUser(user);
-                this.props.onRouteChange('home');
+        }).then(response => response.json())
+        .then (data => {
+            if(data.success === 'true' && data.userId){
+                this.saveAuthTokenInSession(data.token)
+                
+                fetch(`http://localhost:3001/profile/${data.userId}`, {
+                    method: 'get',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': data.token
+                    }
+                  })
+                  .then(res => res.json())
+                  .then(user => {
+                    if(user){
+                      this.props.loadUser(user)
+                      this.props.onRouteChange('home')
+                    }
+                  })
+              .catch(console.log)
             }
         })
     }
-    }
+        
+     
+
+  
 
     render() {
         const { onRouteChange } = this.props;
@@ -69,12 +85,12 @@ class SignIn extends React.Component {
                             <legend className="f2 fw6 ph0 mh0">Sign In</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                                <input onChange={this.onEmailChange} className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address" />
+                                <input onChange={this.onEmailChange} className="pa2 input-classNamereset ba bg-transparent hover-bg-black hover-white w-100 hover-black" type="email" name="email-address" id="email-address" />
                                 <p style={mystyle} id='emailSignInInput'></p>
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                                <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
+                                <input onChange={this.onPasswordChange} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black" type="password" name="password" id="password" />
                                 <p style={mystyle} id='passwordSignInInput'></p>
 
                             </div>
