@@ -6,6 +6,7 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Register from "./components/Register/Register";
 import SignIn from "./components/SignIn/SignIn";
 import UserRank from "./components/UserRank/UserRank";
+import RankList from "./components/RankList/RankList";
 import Particles from "react-particles-js";
 import Modal from "./components/Modal/Modal";
 import Profile from "./components/Profile/Profile";
@@ -32,6 +33,7 @@ const initialState = {
   route: "signin",
   isSignedIn: false,
   isProfileOpen: false,
+  isRankOpen: false,
 
   user: {
     id: "",
@@ -104,7 +106,7 @@ class App extends Component {
     if(data && data.outputs) {
     return data.outputs[0].data.regions.map((face) => {
       const clarifaiFace = face.region_info.bounding_box;
-      const image = document.getElementById("inputImage");
+      const image = document.getElementById("inputimage");
       const width = Number(image.width);
       const height = Number(image.height);
       return {
@@ -117,6 +119,8 @@ class App extends Component {
   }
   return
 }
+
+
 
   //Setting boxes state
   displayFaceBox = (boxes) => {
@@ -181,6 +185,13 @@ class App extends Component {
     this.setState({ route: route });
   };
 
+  toggleModleRankList = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      isRankOpen: !this.state.isRankOpen,
+    }));
+  };
+
   // Show/dismiss user profile modle
   toggleModle = () => {
     this.setState((prevState) => ({
@@ -196,6 +207,7 @@ class App extends Component {
       route,
       boxes,
       isProfileOpen,
+      isRankOpen,
       user,
     } = this.state;
     return (
@@ -205,16 +217,28 @@ class App extends Component {
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}
           toggleModle={this.toggleModle}
+          toggleModleRankList={this.toggleModleRankList}
+          user={user}
         />
 
         {isProfileOpen && (
           <Modal>
             <Profile
-              isProfileOpen={isProfileOpen}
+              // isProfileOpen={isProfileOpen}
               toggleModle={this.toggleModle}
               user={user}
               loadUser={this.loadUser}
-              onRouteChange={this.onRouteChange}
+            />
+          </Modal>
+        )}
+
+          {isRankOpen && (
+          <Modal>
+            <RankList
+              // isProfileOpen={isRankOpen}
+              toggleModleRankList={this.toggleModleRankList}
+              user={user}
+              
             />
           </Modal>
         )}
@@ -222,6 +246,7 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
+            {/* <RankList/> */}
             <UserRank
               name={this.state.user.name}
               entries={this.state.user.entries}
@@ -231,6 +256,7 @@ class App extends Component {
               onPictureSubmit={this.onPictureSubmit}
             />
             <FaceRecognition boxes={boxes} imageUrl={imageUrl} />
+            {/* <RankList/> */}
             {/* <TopRank /> */}
           </div>
         ) : route === "register" ? (
@@ -241,6 +267,7 @@ class App extends Component {
         ) : (
           <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )}
+
       </div>
     );
   }

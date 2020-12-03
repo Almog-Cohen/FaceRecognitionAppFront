@@ -48,27 +48,6 @@ class Profile extends React.Component {
       .catch(console.log);
   };
 
-  onDeleteUser = () => {
-
-    fetch(`http://localhost:3001/removeUser/${this.props.user.id}`, {
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': window.sessionStorage.getItem('token')
-      }
-    }).then(res =>{
-
-      if(res.ok){
-     this.props.toggleModle();
-     window.sessionStorage.removeItem('token')
-     this.props.onRouteChange('signout')
-     return res.json()
-      }
-    })
-    .catch(err => console.log(err))
-
-  }
-
   render() {
     const { user, toggleModle } = this.props;
     const {name, phone, age} = this.state;
@@ -135,12 +114,6 @@ class Profile extends React.Component {
                 onClick={toggleModle}
               >
                 Cancle
-              </button>
-              <button
-                className="b pa2 grow pointer hover-white w-40 bg-light-red b--black-20"
-                onClick={this.onDeleteUser}
-              >
-                DELETE USER
               </button>
             </div>
           </main>
