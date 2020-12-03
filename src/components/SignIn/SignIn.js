@@ -1,5 +1,6 @@
 import React from 'react';
 import './Signin.css' 
+import {SIGN_IN_URL, PROFILE_URL} from "../Constans/Fetch";
 class SignIn extends React.Component {
 
     constructor() {
@@ -26,17 +27,7 @@ class SignIn extends React.Component {
 
     onSubmitSignIn = () => {
 
-
-        // if(!this.state.signInEmail || !this.state.signInPassword){
-     
-            //  if(this.state.signInPassword.length === 0){
-            //     document.getElementById('passwordSignInInput').innerHTML = 'Please enter your password';
-            // }
-            // if(this.state.signInEmail === ''){
-            //     document.getElementById('emailSignInInput').innerHTML = 'Please enter your email address';
-            // }
-        // }else {
-        fetch('http://localhost:3001/signin',{
+        fetch(SIGN_IN_URL,{
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -48,7 +39,7 @@ class SignIn extends React.Component {
             if(data.success === 'true' && data.userId){
                 this.saveAuthTokenInSession(data.token)
                 
-                fetch(`http://localhost:3001/profile/${data.userId}`, {
+                fetch(PROFILE_URL + data.userId, {
                     method: 'get',
                     headers: {
                       'Content-Type': 'application/json',

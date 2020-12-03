@@ -10,7 +10,9 @@ import RankList from "./components/RankList/RankList";
 import Particles from "react-particles-js";
 import Modal from "./components/Modal/Modal";
 import Profile from "./components/Profile/Profile";
+import { SIGN_IN_URL, PROFILE_URL, IMAGE_UPDATE, IMAGE_URL } from "./components/Constans/Fetch"
 import "./App.css";
+import { Form } from "reactstrap";
 
 
 
@@ -55,7 +57,7 @@ class App extends Component {
   componentDidMount() {
     const token = window.sessionStorage.getItem('token');
     if(token){
-      fetch('http://localhost:3001/signin', {
+      fetch(SIGN_IN_URL, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +67,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data =>{
         if(data && data.id){
-          fetch(`http://localhost:3001/profile/${data.id}`, {
+          fetch(PROFILE_URL+data.id, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',
@@ -138,7 +140,7 @@ class App extends Component {
   //Fetching clarifai results from the server
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    fetch("http://localhost:3001/imageurl", {
+    fetch(IMAGE_URL, {
       method: "post",
       headers: { 
         "Content-Type": "application/json",
@@ -150,8 +152,9 @@ class App extends Component {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response) {
-          fetch("http://localhost:3001/image", {
+        console.log('my response' +response);
+        if (response !== 'Unable to work with API ')  {
+          fetch(IMAGE_UPDATE, {
             method: "put",
             headers: {
                "Content-Type": "application/json",
@@ -235,10 +238,7 @@ class App extends Component {
           {isRankOpen && (
           <Modal>
             <RankList
-              // isProfileOpen={isRankOpen}
               toggleModleRankList={this.toggleModleRankList}
-              user={user}
-              
             />
           </Modal>
         )}

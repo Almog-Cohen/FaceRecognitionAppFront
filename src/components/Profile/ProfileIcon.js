@@ -5,8 +5,9 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import {REMOVE_USER_URL, SIGN_OUT_URL, } from "../Constans/Fetch";
 
-const ProfileIcon = ({ onRouteChange, toggleModle, user,toggleModleRankList }) => {
+const ProfileIcon = ({ onRouteChange, toggleModle, user, toggleModleRankList }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const token = window.sessionStorage.getItem("token");
@@ -14,7 +15,7 @@ const ProfileIcon = ({ onRouteChange, toggleModle, user,toggleModleRankList }) =
   const onSignOut = () => {
     window.sessionStorage.removeItem("token")
     onRouteChange("signout");
-    fetch(`http://localhost:3001/signout`, {
+    fetch(SIGN_OUT_URL, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +27,7 @@ const ProfileIcon = ({ onRouteChange, toggleModle, user,toggleModleRankList }) =
   };
 
   const onDeleteUser = () => {
-    fetch(`http://localhost:3001/removeUser/${user.id}`, {
+    fetch(REMOVE_USER_URL + user.id, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",

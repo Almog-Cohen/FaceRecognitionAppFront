@@ -2,19 +2,15 @@ import React,{useState,useEffect} from "react";
 import RankCard from "./RankCard";
 import "../Profile/Profile.css";
 import "./RankCard.css"
+import {RANK_LIST_URL} from "../Constans/Fetch";
 
 
-const robots = [{name: 'mog'}, {name: 'mogo'}, {name: 'mogiz'},{name: 'java'}]
-
-
-
- 
 const RankList = ({toggleModleRankList}) => {
 
     const [rankList,setRankList] = useState([])
     
    useEffect(() => {
-    fetch(`http://localhost:3001/rank-list`, {
+    fetch(RANK_LIST_URL, {
         method: "get",
         headers: {
              "Content-Type": "application/json",
@@ -29,28 +25,9 @@ const RankList = ({toggleModleRankList}) => {
         })
         .catch(console.log);
    },[])
-
-
-//    useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//        const result = await fetch(`http://localhost:3001/rank-list`,);
-//        const body = await result.json();
-//        setData(body);
-//       } catch(err) {
-//         // error handling code
-//       } 
-//     }
-  
-//     // call the async fetchData function
-//     fetchData()
-  
-//   }, [])
-console.log('RANK LIST DATA :  '+ rankList);;
     
   return (
 
-    
     <div className="profile-modal">
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center bg-white">
         <main className="pa4 black-80 w-80">
@@ -59,12 +36,9 @@ console.log('RANK LIST DATA :  '+ rankList);;
             className="h3 w3 dib"
             alt="avatar"
           />
-
           <hr />
-
          {/* I WANT CENTER THIS */}
         <div>
-
           {rankList.map((userRank,i) => {
             return (
               <div key={i}>
@@ -77,7 +51,6 @@ console.log('RANK LIST DATA :  '+ rankList);;
             );
           })}
           </div>
-
           <div
             className="mt4"
             style={{ display: "flex", justifyContent: "space-evenly" }}
@@ -98,22 +71,3 @@ console.log('RANK LIST DATA :  '+ rankList);;
 
 export default RankList;
 
-{
-  /* <div className="profile-modal"
-style={{ display: "flex", justifyContent: "left" }}
->
-
-{
-    robots.map((user) => {
-        return (
-            <div key={user.name}>
-            <RankCard 
-                
-                name={user.name}
-                email={user.email}
-            />
-             </div>
-        );
-    })
-} */
-}

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Profile.css";
-
+import { PROFILE_URL } from "../Constans/Fetch"
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +31,7 @@ class Profile extends React.Component {
    
 
   onProfileUpdate = (data) => {
-    fetch(`http://localhost:3001/profile/${this.props.user.id}`, {
+    fetch(PROFILE_URL + this.props.user.id, {
       method: "post",
       headers: {
            "Content-Type": "application/json",

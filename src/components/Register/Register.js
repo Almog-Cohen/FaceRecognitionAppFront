@@ -1,5 +1,7 @@
 import React from 'react';
 import '../SignIn/Signin.css' 
+import {REGISTER_URL, PROFILE_URL} from "../Constans/Fetch";
+
 class Register extends React.Component {
 
     constructor(props) {
@@ -41,7 +43,7 @@ class Register extends React.Component {
             document.getElementById('emailInput').innerHTML = 'Please enter your email address';
         }
      } else {
-            fetch('http://localhost:3001/register', {
+            fetch(REGISTER_URL, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -63,7 +65,7 @@ class Register extends React.Component {
                     if (data.userId && data.success === 'true' )  {
                         this.saveAuthTokenInSession(data.token)
 
-                        fetch(`http://localhost:3001/profile/${data.userId}`, {
+                        fetch(PROFILE_URL + data.userId, {
                             method: 'get',
                             headers: {
                               'Content-Type': 'application/json',
