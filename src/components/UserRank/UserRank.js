@@ -1,7 +1,21 @@
 
-import React from 'react';
+import React,{useState,useEffect} from 'react';
+import {RANK_LAMBDA_URL} from '../Constans/Fetch'
 
 const UserRank = ({ name, entries }) => {
+
+const [emojiRank, setEmojiRank] = useState('');
+
+useEffect(() => {
+fetch(RANK_LAMBDA_URL + entries)
+.then( res => res.json())
+.then(data => setEmojiRank(data.input))
+.catch(console.log)
+}, [entries])
+
+
+
+
   return (
     <div>
       <div className='white f3'>
@@ -9,6 +23,9 @@ const UserRank = ({ name, entries }) => {
       </div>
       <div className='white f1'>
         {entries}
+      </div>
+      <div className='white f3'>
+        {`Rank Badge lambda: ${emojiRank}`}
       </div>
     </div>
   );
