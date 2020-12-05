@@ -78,10 +78,10 @@ const ProfileIcon = ({
           <DropdownItem onClick={() => toggleModle()}>
             View Profile
           </DropdownItem>
-          <DropdownItem onClick={() => onSignOut()}>Signout</DropdownItem>
           <DropdownItem onClick={() => toggleModleRankList()}>
             Rank List 
           </DropdownItem>
+          <DropdownItem onClick={() => onSignOut()}>Signout</DropdownItem>
           <DropdownItem onClick={() => onDeleteUser()}>
             Delete user 
           </DropdownItem>

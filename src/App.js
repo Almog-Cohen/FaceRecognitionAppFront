@@ -81,7 +81,6 @@ class App extends Component {
               .then((res) => res.json())
               .then((user) => {
                 if (user && user.email) {
-                  console.log(user);
                   this.loadUser(user);
                   this.onRouteChange("home");
                 }
@@ -130,6 +129,8 @@ class App extends Component {
   displayFaceBox = (boxes) => {
     if (boxes) {
       this.setState({ boxes: boxes });
+    }else{
+      this.setState({boxes: []});
     }
   };
 

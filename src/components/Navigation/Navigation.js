@@ -6,7 +6,7 @@ const Navigation = ({ onRouteChange, isSignedIn , toggleModle, user, toggleModle
     return (
         <nav style={{ display: 'flex', justifyContent: "flex-end" }}>
             <ProfileIcon
-             onRouteChange={onRouteChange}
+              onRouteChange={onRouteChange}
               toggleModle={toggleModle}
               toggleModleRankList={toggleModleRankList}
               user={user}
