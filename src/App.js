@@ -213,6 +213,7 @@ class App extends Component {
       isRankOpen,
       user,
     } = this.state;
+    
     return (
       <div className="App">
         <Particles className="particles" params={particlesDesign} />
