@@ -171,8 +171,9 @@ class App extends Component {
               );
             })
             .catch(console.log);
-            this.displayFaceBox(this.calculateFacesLocation(response));
+            
         }
+        this.displayFaceBox(this.calculateFacesLocation(response));
       })
       .catch((err) => console.log(err));
   };
