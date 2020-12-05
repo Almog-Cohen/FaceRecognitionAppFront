@@ -5,15 +5,20 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import {REMOVE_USER_URL, SIGN_OUT_URL, } from "../Constans/Fetch";
+import { REMOVE_USER_URL, SIGN_OUT_URL } from "../Constans/Fetch";
 
-const ProfileIcon = ({ onRouteChange, toggleModle, user, toggleModleRankList }) => {
+const ProfileIcon = ({
+  onRouteChange,
+  toggleModle,
+  user,
+  toggleModleRankList,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const token = window.sessionStorage.getItem("token");
-  
+
   const onSignOut = () => {
-    window.sessionStorage.removeItem("token")
+    window.sessionStorage.removeItem("token");
     onRouteChange("signout");
     fetch(SIGN_OUT_URL, {
       method: "delete",
@@ -37,7 +42,7 @@ const ProfileIcon = ({ onRouteChange, toggleModle, user, toggleModleRankList }) 
       .then((res) => {
         if (res.ok) {
           toggleModle();
-          window.sessionStorage.removeItem("token")
+          window.sessionStorage.removeItem("token");
           onRouteChange("signout");
           return res.json();
         }
@@ -74,11 +79,11 @@ const ProfileIcon = ({ onRouteChange, toggleModle, user, toggleModleRankList }) 
             View Profile
           </DropdownItem>
           <DropdownItem onClick={() => onSignOut()}>Signout</DropdownItem>
-          <DropdownItem onClick={() => onDeleteUser()}>
-            Delete user
-          </DropdownItem>
           <DropdownItem onClick={() => toggleModleRankList()}>
-            RankList Profile
+            Rank List 
+          </DropdownItem>
+          <DropdownItem onClick={() => onDeleteUser()}>
+            Delete user 
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -10,11 +10,14 @@ import RankList from "./components/RankList/RankList";
 import Particles from "react-particles-js";
 import Modal from "./components/Modal/Modal";
 import Profile from "./components/Profile/Profile";
-import { SIGN_IN_URL, PROFILE_URL, IMAGE_UPDATE, IMAGE_URL } from "./components/Constans/Fetch"
+import {
+  SIGN_IN_URL,
+  PROFILE_URL,
+  IMAGE_UPDATE,
+  IMAGE_URL,
+} from "./components/Constans/Fetch";
 import "./App.css";
-import { Form } from "reactstrap";
-
-
+// import { Form } from "reactstrap";
 
 const particlesDesign = {
   particles: {
@@ -54,37 +57,38 @@ class App extends Component {
     this.state = initialState;
   }
 
+  // Signin auto if players own token if not the server generate new one
   componentDidMount() {
-    const token = window.sessionStorage.getItem('token');
-    if(token){
+    const token = window.sessionStorage.getItem("token");
+    if (token) {
       fetch(SIGN_IN_URL, {
-        method: 'post',
+        method: "post",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        }
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
       })
-      .then(res => res.json())
-      .then(data =>{
-        if(data && data.id){
-          fetch(PROFILE_URL+data.id, {
-            method: 'get',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': token
-            }
-          })
-          .then(res => res.json())
-          .then(user => {
-            if(user && user.email){
-              console.log(user);
-              this.loadUser(user)
-              this.onRouteChange('home')
-            }
-          })
-        }
-      })
-      .catch(console.log)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.id) {
+            fetch(PROFILE_URL + data.id, {
+              method: "get",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+            })
+              .then((res) => res.json())
+              .then((user) => {
+                if (user && user.email) {
+                  console.log(user);
+                  this.loadUser(user);
+                  this.onRouteChange("home");
+                }
+              });
+          }
+        })
+        .catch(console.log);
     }
   }
 
@@ -98,36 +102,34 @@ class App extends Component {
         entries: data.entries,
         joined: data.joined,
         phone: data.phone,
-        age: data.age
+        age: data.age,
       },
     });
   };
 
   //Calculating the face location
   calculateFacesLocation = (data) => {
-    if(data && data.outputs) {
-    return data.outputs[0].data.regions.map((face) => {
-      const clarifaiFace = face.region_info.bounding_box;
-      const image = document.getElementById("inputimage");
-      const width = Number(image.width);
-      const height = Number(image.height);
-      return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height,
-      };
-    });
-  }
-  return
-}
-
-
+    if (data && data.outputs) {
+      return data.outputs[0].data.regions.map((face) => {
+        const clarifaiFace = face.region_info.bounding_box;
+        const image = document.getElementById("inputimage");
+        const width = Number(image.width);
+        const height = Number(image.height);
+        return {
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - clarifaiFace.right_col * width,
+          bottomRow: height - clarifaiFace.bottom_row * height,
+        };
+      });
+    }
+    return;
+  };
 
   //Setting boxes state
   displayFaceBox = (boxes) => {
-    if(boxes){
-    this.setState({ boxes: boxes });
+    if (boxes) {
+      this.setState({ boxes: boxes });
     }
   };
 
@@ -136,30 +138,28 @@ class App extends Component {
     this.setState({ input: event.target.value });
   };
 
-
   //Fetching clarifai results from the server
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input });
     fetch(IMAGE_URL, {
       method: "post",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        'Authorization': window.sessionStorage.getItem('token')
-     },
+        Authorization: window.sessionStorage.getItem("token"),
+      },
       body: JSON.stringify({
         input: this.state.input,
       }),
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log('my response' +response);
-        if (response !== 'Unable to work with API ')  {
+        if (response !== "Unable to work with API ") {
           fetch(IMAGE_UPDATE, {
             method: "put",
             headers: {
-               "Content-Type": "application/json",
-               'Authorization': window.sessionStorage.getItem('token')
-               },
+              "Content-Type": "application/json",
+              Authorization: window.sessionStorage.getItem("token"),
+            },
             body: JSON.stringify({
               id: this.state.user.id,
             }),
@@ -171,9 +171,8 @@ class App extends Component {
               );
             })
             .catch(console.log);
+            this.displayFaceBox(this.calculateFacesLocation(response));
         }
-
-        this.displayFaceBox(this.calculateFacesLocation(response));
       })
       .catch((err) => console.log(err));
   };
@@ -188,6 +187,7 @@ class App extends Component {
     this.setState({ route: route });
   };
 
+  // Show/dismiss ranked list modle
   toggleModleRankList = () => {
     this.setState((prevState) => ({
       ...prevState,
@@ -223,30 +223,23 @@ class App extends Component {
           toggleModleRankList={this.toggleModleRankList}
           user={user}
         />
-
         {isProfileOpen && (
           <Modal>
             <Profile
-              // isProfileOpen={isProfileOpen}
               toggleModle={this.toggleModle}
               user={user}
               loadUser={this.loadUser}
             />
           </Modal>
         )}
-
-          {isRankOpen && (
+        {isRankOpen && (
           <Modal>
-            <RankList
-              toggleModleRankList={this.toggleModleRankList}
-            />
+            <RankList toggleModleRankList={this.toggleModleRankList} />
           </Modal>
         )}
-
         {route === "home" ? (
           <div>
             <Logo />
-            {/* <RankList/> */}
             <UserRank
               name={this.state.user.name}
               entries={this.state.user.entries}
@@ -256,8 +249,6 @@ class App extends Component {
               onPictureSubmit={this.onPictureSubmit}
             />
             <FaceRecognition boxes={boxes} imageUrl={imageUrl} />
-            {/* <RankList/> */}
-            {/* <TopRank /> */}
           </div>
         ) : route === "register" ? (
           <Register
@@ -267,7 +258,6 @@ class App extends Component {
         ) : (
           <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )}
-
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Profile.css";
-import { PROFILE_URL } from "../Constans/Fetch"
+import { PROFILE_URL } from "../Constans/Fetch";
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +11,7 @@ class Profile extends React.Component {
     };
   }
 
+  // Setting profile states
   onFormChange = (event) => {
     switch (event.target.name) {
       case "user-name":
@@ -28,29 +29,28 @@ class Profile extends React.Component {
     }
   };
 
-   
-
+  // Updating profile data
   onProfileUpdate = (data) => {
     fetch(PROFILE_URL + this.props.user.id, {
       method: "post",
       headers: {
-           "Content-Type": "application/json",
-           'Authorization': window.sessionStorage.getItem('token')
-         },
+        "Content-Type": "application/json",
+        Authorization: window.sessionStorage.getItem("token"),
+      },
       body: JSON.stringify({ formInput: data }),
     })
       .then((response) => {
-          if(response.status === 200 || response.status === 304){
-            this.props.toggleModle();
-            this.props.loadUser({ ...this.props.user, ...data });
-          }
+        if (response.status === 200 || response.status === 304) {
+          this.props.toggleModle();
+          this.props.loadUser({ ...this.props.user, ...data });
+        }
       })
       .catch(console.log);
   };
 
   render() {
     const { user, toggleModle } = this.props;
-    const {name, phone, age} = this.state;
+    const { name, phone, age } = this.state;
 
     return (
       <div className="profile-modal">
@@ -105,8 +105,9 @@ class Profile extends React.Component {
               style={{ display: "flex", justifyContent: "space-evenly" }}
             >
               <button
-              onClick={() => this.onProfileUpdate({name, phone, age})}
-               className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20">
+                onClick={() => this.onProfileUpdate({ name, phone, age })}
+                className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20"
+              >
                 Save
               </button>
               <button

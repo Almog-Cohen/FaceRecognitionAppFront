@@ -1,3 +1,4 @@
+// Fetch urls
 export const SIGN_IN_URL = 'http://localhost:3001/signin';
 export const REGISTER_URL = "http://localhost:3001/register";
 export const IMAGE_URL = 'http://localhost:3001/imageurl';
