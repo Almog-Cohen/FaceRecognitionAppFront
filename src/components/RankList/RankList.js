@@ -31,7 +31,7 @@ const RankList = ({ toggleModleRankList }) => {
   return (
     <div className="profile-modal">
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center bg-white">
-        <main className="pa4 black-80 w-80">
+        <main className="pa4 black-80 w-80" style={{textAlign: 'center'}}>
           <img
             src="http://tachyons.io/img/logo.jpg"
             className="h3 w3 dib"
